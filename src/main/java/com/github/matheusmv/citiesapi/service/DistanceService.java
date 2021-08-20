@@ -4,9 +4,7 @@ import com.github.matheusmv.citiesapi.model.City;
 import com.github.matheusmv.citiesapi.repository.CityRepository;
 import com.github.matheusmv.citiesapi.service.util.EarthRadius;
 import com.github.matheusmv.citiesapi.service.util.StringLocationUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 
@@ -20,23 +18,16 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.toRadians;
 
 @Service
+@AllArgsConstructor
 public class DistanceService {
 
-    Logger log = LoggerFactory.getLogger(DistanceService.class);
-
-    @Autowired
-    private CityRepository cityRepository;
+    private final CityRepository cityRepository;
 
     public Double distanceByPointsInMiles(final Long city1, final Long city2) {
-
-        log.info("nativePostgresInMiles({}, {})", city1, city2);
-
         return cityRepository.distanceByPoints(city1, city2);
     }
 
     public Double distanceByCubeInMeters(Long city1, Long city2) {
-
-        log.info("distanceByCubeInMeters({}, {})", city1, city2);
 
         final List<City> cities = cityRepository.findAllById((Arrays.asList(city1, city2)));
 
@@ -50,8 +41,6 @@ public class DistanceService {
                                       final Long city2,
                                       final EarthRadius unit) {
 
-        log.info("distanceUsingPoints({}, {}, {})", city1, city2, unit);
-
         final List<City> cities = cityRepository.findAllById((Arrays.asList(city1, city2)));
 
         Point p1 = cities.get(0).getLocation();
@@ -63,8 +52,6 @@ public class DistanceService {
     public Double distanceUsingMath(final Long city1,
                                     final Long city2,
                                     final EarthRadius unit) {
-
-        log.info("distanceUsingMath({}, {}, {})", city1, city2, unit);
 
         final List<City> cities = cityRepository.findAllById((Arrays.asList(city1, city2)));
 
