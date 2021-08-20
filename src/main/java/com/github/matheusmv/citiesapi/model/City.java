@@ -32,6 +32,9 @@ public class City {
 
     private String ibge;
 
+    @Column(name = "lat_lon")
+    private String geolocation;
+
     @Type(type = "point")
     @Column(name = "lat_lon", updatable = false, insertable = false)
     private Point location;
